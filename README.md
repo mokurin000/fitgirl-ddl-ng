@@ -25,3 +25,12 @@ uv run refresh-cookies
 ```bash
 uv run extract-ddl waterpark-simulator.txt
 ```
+
+## Build
+
+To build CLI exe's with `pyinstaler`:
+
+```bash
+uv pip install pyinstaller
+uv run pyinstaller --no-confirm fitgirl-cli.spec
+```
