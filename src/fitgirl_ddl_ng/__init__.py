@@ -10,7 +10,8 @@ COOKIES_SESSION = Path(__file__).parent / "cookies.dat"
 def cookies_valid() -> bool:
     try:
         mtime = os.path.getmtime(COOKIES_SESSION)
-        if time.time() - mtime < 1800:
+        # Leave 5 minutes for scraping
+        if time.time() - mtime < 1500:
             return True
     except FileNotFoundError:
         pass

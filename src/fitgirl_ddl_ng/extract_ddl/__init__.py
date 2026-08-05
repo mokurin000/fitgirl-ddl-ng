@@ -1,7 +1,24 @@
+import re
 from urllib.parse import urlparse
 
 from zendriver import Tab
 from loguru import logger
+
+_SUFFIX_PATTERN = re.compile(r"\.part\d+\.rar$|\.rar$")
+
+
+def group_urls(urls: list[str]) -> dict[str, list[str]]:
+    """Group URLs by their fragment."""
+
+    groups: dict[str, list[str]] = {}
+    for url in urls:
+        fragment = urlparse(url).fragment
+        if fragment and _SUFFIX_PATTERN.search(fragment):
+            group = _SUFFIX_PATTERN.sub("", fragment)
+        else:
+            group = fragment
+        groups.setdefault(group, []).append(url)
+    return groups
 
 
 async def extract_ddl(tab: Tab, urls: list[str]) -> str:
