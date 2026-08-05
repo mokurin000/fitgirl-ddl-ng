@@ -8,6 +8,8 @@ COOKIES_SESSION = Path(__file__).parent / "cookies.dat"
 
 
 def cookies_valid() -> bool:
+    os.makedirs(Path(__file__).parent, exist_ok=True)
+
     try:
         mtime = os.path.getmtime(COOKIES_SESSION)
         # Leave 5 minutes for scraping
