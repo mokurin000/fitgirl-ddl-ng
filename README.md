@@ -1,6 +1,11 @@
 # fitgirl-ddl-ng
 
-Next generation of `fitgirl-ddl`, solving cloudflare turnstile.
+Next generation of `fitgirl-ddl`, working with latest `fuckingfast.co`.
+
+## Prerequisites
+
+- `Chrome`, `Chromium`, or `Brave` browser installed.
+- Network connection that could pass the cloudflare turnstile.
 
 ## Scrape urls
 
