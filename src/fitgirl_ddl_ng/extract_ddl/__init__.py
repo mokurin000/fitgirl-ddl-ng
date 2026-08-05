@@ -3,8 +3,12 @@ from urllib.parse import urlparse
 
 from zendriver import Tab
 from loguru import logger
+from tqdm.asyncio import tqdm
 
 _SUFFIX_PATTERN = re.compile(r"\.part\d+\.rar$|\.rar$")
+
+logger.remove()  # Remove default handler
+logger.add(lambda msg: tqdm.write(msg, end=""), colorize=True)
 
 
 def group_urls(urls: list[str]) -> dict[str, list[str]]:
@@ -23,7 +27,7 @@ def group_urls(urls: list[str]) -> dict[str, list[str]]:
 
 async def extract_ddl(tab: Tab, urls: list[str]) -> str:
     result_text = ""
-    for original_url in urls:
+    for original_url in tqdm(urls):
         url_parse = urlparse(original_url)
         file_id = url_parse.path.removeprefix("/")
         file_name = url_parse.fragment
