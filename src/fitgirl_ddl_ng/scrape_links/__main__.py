@@ -5,7 +5,6 @@ import zendriver as zd
 from loguru import logger
 from prompt_toolkit.shortcuts import PromptSession
 
-from fitgirl_ddl_ng import COOKIES_SESSION, cookies_valid
 from fitgirl_ddl_ng.scrape_links import FuckingFastMissing
 
 FUCKING_FAST = "div.entry-content ul > li:nth-child(2)"
@@ -74,9 +73,6 @@ async def scrape_ff_links(tab: zd.Tab) -> list[str]:
 
 
 async def main():
-    if not cookies_valid():
-        logger.error("Cookies expired, exiting...")
-        exit(1)
 
     session = PromptSession()
 
@@ -92,9 +88,6 @@ async def main():
     slug = urlparse(url).path.strip("/")
 
     browser = await zd.start()
-
-    # Load cookies for fuckingfast
-    await browser.cookies.load(COOKIES_SESSION)
 
     tab = await browser.get(url)
     urls = await scrape_ff_links(tab)
