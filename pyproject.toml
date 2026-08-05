@@ -8,6 +8,7 @@ dependencies = [
     "loguru>=0.7.3",
     "opencv-python-headless>=5.0.0.93",
     "questionary>=2.1.1",
+    "typer>=0.27.1",
     "zendriver>=0.15.5",
 ]
 
