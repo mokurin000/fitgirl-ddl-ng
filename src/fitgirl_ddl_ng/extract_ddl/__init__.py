@@ -1,6 +1,7 @@
 from urllib.parse import urlparse
 
 from zendriver import Tab
+from loguru import logger
 
 
 async def extract_ddl(tab: Tab, urls: list[str]) -> str:
@@ -33,7 +34,13 @@ async def extract_ddl(tab: Tab, urls: list[str]) -> str:
         result = await tab.evaluate(
             expression, await_promise=True, return_by_value=True
         )
-        direct_uri = result["headers"]["hx-redirect"]
+
+        try:
+            direct_uri = result["headers"]["hx-redirect"]
+        except KeyError:
+            logger.error(f"Skipping {original_url} due to missing direct link")
+            continue
+
         result_text += f"""{direct_uri}
     out={file_name}
     continue=true
