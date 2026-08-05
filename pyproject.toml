@@ -5,8 +5,8 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "nodriver>=0.50.3",
     "opencv-python-headless>=5.0.0.93",
+    "zendriver>=0.15.5",
 ]
 
 [[tool.uv.index]]

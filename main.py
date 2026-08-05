@@ -4,8 +4,8 @@ import asyncio
 import tempfile
 from pathlib import Path
 
-import nodriver as uc
-from nodriver import Browser, cdp
+import zendriver as zd
+from zendriver import Browser, cdp
 
 BROWSER_INSTANCE = None
 DOWNLOAD_EVENTS = queue.Queue()
@@ -61,7 +61,7 @@ async def ensure_cookies(browser: Browser):
 async def main():
     global BROWSER_INSTANCE
 
-    browser = await uc.start()
+    browser = await zd.start()
     BROWSER_INSTANCE = browser
 
     asyncio.create_task(cancel_downloads())
