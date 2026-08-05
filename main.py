@@ -1,4 +1,3 @@
-import queue
 import shutil
 import asyncio
 import tempfile
@@ -8,25 +7,12 @@ import zendriver as zd
 from zendriver import Browser, cdp
 
 BROWSER_INSTANCE = None
-DOWNLOAD_EVENTS = queue.Queue()
 
 TEMP_DIR = str(Path(tempfile.gettempdir()) / "fitgirl-ddl-ng")
 
 
-def download_handler(event: cdp.browser.DownloadWillBegin):
-    DOWNLOAD_EVENTS.put(event)
-
-
-async def cancel_downloads():
-    while True:
-        try:
-            event: cdp.browser.DownloadWillBegin = DOWNLOAD_EVENTS.get_nowait()
-        except queue.Empty:
-            await asyncio.sleep(0.0)
-        else:
-            await BROWSER_INSTANCE.connection.send(
-                cdp.browser.cancel_download(event.guid)
-            )
+async def download_handler(event: cdp.browser.DownloadWillBegin):
+    await BROWSER_INSTANCE.connection.send(cdp.browser.cancel_download(event.guid))
 
 
 async def ensure_cookies(browser: Browser):
@@ -66,7 +52,6 @@ async def main():
     browser = await zd.start()
     BROWSER_INSTANCE = browser
 
-    asyncio.create_task(cancel_downloads())
     await browser.connection.send(
         cdp.browser.set_download_behavior(
             behavior="allowAndName",
