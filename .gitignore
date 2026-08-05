@@ -1,6 +1,9 @@
 # Cookies store
 cookies.dat
 
+# Scrape/Extraction output
+/*.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
