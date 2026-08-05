@@ -48,7 +48,7 @@ source = { editable = "." }
 dependencies = [
     { name = "loguru" },
     { name = "opencv-python-headless" },
-    { name = "prompt-toolkit" },
+    { name = "questionary" },
     { name = "zendriver" },
 ]
 
@@ -56,7 +56,7 @@ dependencies = [
 requires-dist = [
     { name = "loguru", specifier = ">=0.7.3" },
     { name = "opencv-python-headless", specifier = ">=5.0.0.93" },
-    { name = "prompt-toolkit", specifier = ">=3.0.53" },
+    { name = "questionary", specifier = ">=2.1.1" },
     { name = "zendriver", specifier = ">=0.15.5" },
 ]
 
@@ -146,6 +146,18 @@ dependencies = [
 sdist = { url = "https://mirrors.bfsu.edu.cn/pypi/web/packages/7d/ea/39b988c938f75cb75d7045b5c69f8bfed47ee2152c8837fb403de29d6fb8/prompt_toolkit-3.0.53.tar.gz", hash = "sha256:9ec8a0ad96d5c56148b3f914aa79c1564c3fde5d2e6b876e7bc327e353cf8fa6", size = 435492, upload-time = "2026-07-26T20:56:14.758Z" }
 wheels = [
     { url = "https://mirrors.bfsu.edu.cn/pypi/web/packages/54/6f/84908cad2d6aa5144abcf7b42709fe4fdb459bc640ec7ac5786e7693dabc/prompt_toolkit-3.0.53-py3-none-any.whl", hash = "sha256:01c0891d7f9237d5e339f7d3e42cdae80b7534abb1c7c0e3352efba6231492f2", size = 392288, upload-time = "2026-07-26T20:56:12.512Z" },
+]
+
+[[package]]
+name = "questionary"
+version = "2.1.1"
+source = { registry = "https://mirrors.bfsu.edu.cn/pypi/web/simple/" }
+dependencies = [
+    { name = "prompt-toolkit" },
+]
+sdist = { url = "https://mirrors.bfsu.edu.cn/pypi/web/packages/f6/45/eafb0bba0f9988f6a2520f9ca2df2c82ddfa8d67c95d6625452e97b204a5/questionary-2.1.1.tar.gz", hash = "sha256:3d7e980292bb0107abaa79c68dd3eee3c561b83a0f89ae482860b181c8bd412d", size = 25845, upload-time = "2025-08-28T19:00:20.851Z" }
+wheels = [
+    { url = "https://mirrors.bfsu.edu.cn/pypi/web/packages/3c/26/1062c7ec1b053db9e499b4d2d5bc231743201b74051c973dadeac80a8f43/questionary-2.1.1-py3-none-any.whl", hash = "sha256:a51af13f345f1cdea62347589fbb6df3b290306ab8930713bfae4d475a7d4a59", size = 36753, upload-time = "2025-08-28T19:00:19.56Z" },
 ]
 
 [[package]]

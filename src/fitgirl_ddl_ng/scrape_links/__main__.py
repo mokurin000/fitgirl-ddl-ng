@@ -1,9 +1,9 @@
+import sys
 import asyncio
 from urllib.parse import urlparse
 
 import zendriver as zd
 from loguru import logger
-from prompt_toolkit.shortcuts import PromptSession
 
 from fitgirl_ddl_ng.scrape_links import FuckingFastMissing
 
@@ -18,20 +18,27 @@ FILE_HOSTER_SPOLIER = f"{FUCKING_FAST} > div.su-spoiler > div.su-spoiler-content
 """Spolier content for multi-part releases."""
 
 
-async def scrape_ff_links(tab: zd.Tab) -> list[str]:
+async def scrape_ff_links(tab: zd.Tab, url: str) -> list[str]:
     """
     Try to fetch fuckingfast.co links from a fitgirl game post.
 
     :raise FuckingFastMissing: fuckingfast.co file hoster not found
     """
 
-    logger.info(f"Processing {tab.url}...")
+    logger.info(f"Goto {url}...")
 
-    await tab.wait_for_ready_state(until="interactive")
+    await tab.get(url)
+    await tab.wait_for_ready_state(until="interactive", timeout=60)
     logger.info("Page loaded, scraping...")
 
     # Sometimes fitgirl put multiple "FileHoster: FuckingFast" in a post
     filehoster_ff_atags = await tab.select_all(FILE_HOSTER_SINGLE)
+    filehoster_ff_atags = [
+        tag
+        for tag in filehoster_ff_atags
+        if "Filehoster: FuckingFast"  # filter exactly FuckingFast button
+        in tag.text_all
+    ]
 
     match len(filehoster_ff_atags):
         case 0:
@@ -73,27 +80,30 @@ async def scrape_ff_links(tab: zd.Tab) -> list[str]:
 
 
 async def main():
-
-    session = PromptSession()
-
-    url: str = await session.prompt_async(
-        message="Game to scrape: ",
-        placeholder="https://fitgirl-repacks.site/.../",
-    )
-
-    if not url.startswith("https://fitgirl-repacks.site/"):
-        logger.error("Fake fitgirl website was found!")
-        exit(1)
-
-    slug = urlparse(url).path.strip("/")
+    if len(sys.argv) < 2:
+        logger.warning("no game URL was given!")
+        return
 
     browser = await zd.start()
+    tab = await browser.get()
 
-    tab = await browser.get(url)
-    urls = await scrape_ff_links(tab)
+    for url in sys.argv[1:]:
+        url = url.strip()
+        if not url:
+            logger.error("Game url cannot be empty!")
+            continue
+        if not url.startswith("https://fitgirl-repacks.site/"):
+            logger.error("Fake fitgirl website was found!")
+            continue
 
-    with open(f"{slug}.txt", "w", encoding="utf-8") as f:
-        print(*urls, sep="\n", file=f)
+        slug = urlparse(url).path.strip("/")
+
+        urls = await scrape_ff_links(tab, url)
+
+        file = f"{slug}.txt"
+        with open(file, "w", encoding="utf-8") as f:
+            print(*urls, sep="\n", file=f)
+        logger.info(f"Scraped: {file}")
 
     await browser.stop()
 
