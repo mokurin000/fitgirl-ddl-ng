@@ -1,12 +1,11 @@
-import os
-import time
 import shutil
 import asyncio
 
 import zendriver as zd
+from loguru import logger
 from zendriver import Browser, Config, cdp
 
-from fitgirl_ddl_ng import COOKIES_SESSION, TEMP_DIR
+from fitgirl_ddl_ng import COOKIES_SESSION, TEMP_DIR, cookies_valid
 
 BROWSER_INSTANCE = None
 
@@ -19,12 +18,15 @@ async def ensure_cookies(browser: Browser):
     tab = await browser.get(
         "https://fuckingfast.co/oemaevh39h2t#Skills_and_Raids_--_fitgirl-repacks.site_--_.rar"
     )
+    logger.info("Waiting for cloudflare turnstile...")
     await tab.verify_cf(timeout=60.0)
+    logger.info("Cloudflare turnstile bypassed")
 
     button = await tab.select("a.gay-button")
     while True:
         html = await button.get_html()
         if 'style="opacity:0.5;cursor:not-allowed"' not in html:
+            logger.info("Download button ready")
             break
         await asyncio.sleep(0.5)
 
@@ -37,6 +39,7 @@ async def ensure_cookies(browser: Browser):
         cookies = await browser.cookies.get_all()
         for cookie in cookies:
             if cookie.name == "dlpass":
+                logger.info("Cookies refreshed")
                 dlpass = cookie.value
         await asyncio.sleep(0.5)
 
@@ -46,12 +49,9 @@ async def ensure_cookies(browser: Browser):
 async def main():
     global BROWSER_INSTANCE
 
-    try:
-        mtime = os.path.getmtime(COOKIES_SESSION)
-        if time.time() - mtime < 1800:
-            return
-    except FileNotFoundError:
-        pass
+    if cookies_valid():
+        logger.warning("Cookies was up-to-date, no refresh needed")
+        return
 
     browser = await zd.start(config=Config(headless=False))
     BROWSER_INSTANCE = browser
