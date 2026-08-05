@@ -46,7 +46,7 @@ async def ensure_cookies(browser: Browser):
     return tab
 
 
-async def main():
+async def amain():
     global BROWSER_INSTANCE
 
     if cookies_valid():
@@ -79,5 +79,9 @@ async def main():
     shutil.rmtree(TEMP_DIR)
 
 
+def main():
+    asyncio.run(amain())
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

@@ -19,3 +19,8 @@ package = true
 [[tool.uv.index]]
 url = "https://mirrors.bfsu.edu.cn/pypi/web/simple/"
 default = true
+
+[project.scripts]
+refresh-cookies = "fitgirl_ddl_ng.refresh_cookies.__main__:main"
+scrape-fitgirl = "fitgirl_ddl_ng.scrape_links.__main__:app"
+extract-ddl = "fitgirl_ddl_ng.extract_ddl.__main__:app"
