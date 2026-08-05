@@ -24,14 +24,16 @@ async def cancel_downloads():
         except queue.Empty:
             await asyncio.sleep(0.0)
         else:
-            await BROWSER_INSTANCE.send(cdp.browser.cancel_download(event.guid))
+            await BROWSER_INSTANCE.connection.send(
+                cdp.browser.cancel_download(event.guid)
+            )
 
 
 async def ensure_cookies(browser: Browser):
     page = await browser.get(
         "https://fuckingfast.co/oemaevh39h2t#Skills_and_Raids_--_fitgirl-repacks.site_--_.rar"
     )
-    await page.verify_cf(template_image="cloudflare.png")
+    await page.verify_cf()
 
     button = await page.select("a.gay-button")
     while True:
@@ -65,14 +67,14 @@ async def main():
     BROWSER_INSTANCE = browser
 
     asyncio.create_task(cancel_downloads())
-    await browser.send(
+    await browser.connection.send(
         cdp.browser.set_download_behavior(
             behavior="allowAndName",
             download_path=TEMP_DIR,
             events_enabled=True,
         )
     )
-    browser.add_handler(
+    browser.connection.add_handler(
         cdp.browser.DownloadWillBegin,
         download_handler,
     )
@@ -81,8 +83,7 @@ async def main():
     print(cookies)
 
     # Clean-up
-    browser.stop()
-    print(TEMP_DIR)
+    await browser.stop()
     shutil.rmtree(TEMP_DIR)
 
 
