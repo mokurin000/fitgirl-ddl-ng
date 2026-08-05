@@ -1,14 +1,14 @@
+import os
+import time
 import shutil
 import asyncio
-import tempfile
-from pathlib import Path
 
 import zendriver as zd
-from zendriver import Browser, cdp
+from zendriver import Browser, Config, cdp
+
+from fitgirl_ddl_ng import COOKIES_SESSION, TEMP_DIR
 
 BROWSER_INSTANCE = None
-
-TEMP_DIR = str(Path(tempfile.gettempdir()) / "fitgirl-ddl-ng")
 
 
 async def download_handler(event: cdp.browser.DownloadWillBegin):
@@ -16,12 +16,12 @@ async def download_handler(event: cdp.browser.DownloadWillBegin):
 
 
 async def ensure_cookies(browser: Browser):
-    page = await browser.get(
+    tab = await browser.get(
         "https://fuckingfast.co/oemaevh39h2t#Skills_and_Raids_--_fitgirl-repacks.site_--_.rar"
     )
-    await page.verify_cf()
+    await tab.verify_cf(timeout=60.0)
 
-    button = await page.select("a.gay-button")
+    button = await tab.select("a.gay-button")
     while True:
         html = await button.get_html()
         if 'style="opacity:0.5;cursor:not-allowed"' not in html:
@@ -31,7 +31,6 @@ async def ensure_cookies(browser: Browser):
     # Pop-up ads
     await button.click()
 
-    cf_clearance = None
     dlpass = None
 
     while dlpass is None:
@@ -39,17 +38,22 @@ async def ensure_cookies(browser: Browser):
         for cookie in cookies:
             if cookie.name == "dlpass":
                 dlpass = cookie.value
-            elif cookie.name == "cf_clearance":
-                cf_clearance = cookie.value
         await asyncio.sleep(0.5)
 
-    return f"cf_clearance={cf_clearance}; dlpass={dlpass}"
+    return tab
 
 
 async def main():
     global BROWSER_INSTANCE
 
-    browser = await zd.start()
+    try:
+        mtime = os.path.getmtime(COOKIES_SESSION)
+        if time.time() - mtime < 1800:
+            return
+    except FileNotFoundError:
+        pass
+
+    browser = await zd.start(config=Config(headless=False))
     BROWSER_INSTANCE = browser
 
     await browser.connection.send(
@@ -64,8 +68,11 @@ async def main():
         download_handler,
     )
 
-    cookies = await ensure_cookies(browser=browser)
-    print(cookies)
+    await ensure_cookies(browser=browser)
+    await browser.cookies.save(
+        file=COOKIES_SESSION,
+        pattern="(cf_clearance|dlpass)",
+    )
 
     # Clean-up
     await browser.stop()
