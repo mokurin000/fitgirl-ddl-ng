@@ -1,23 +1,19 @@
-import shutil
 import asyncio
 
 import zendriver as zd
 from loguru import logger
 from zendriver import Browser, Config, cdp
 
-from fitgirl_ddl_ng import COOKIES_SESSION, TEMP_DIR, cookies_valid
+from fitgirl_ddl_ng import COOKIES_SESSION, cookies_valid
 
 BROWSER_INSTANCE = None
-
-
-async def download_handler(event: cdp.browser.DownloadWillBegin):
-    await BROWSER_INSTANCE.connection.send(cdp.browser.cancel_download(event.guid))
 
 
 async def ensure_cookies(browser: Browser):
     tab = await browser.get(
         "https://fuckingfast.co/oemaevh39h2t#Skills_and_Raids_--_fitgirl-repacks.site_--_.rar"
     )
+
     logger.info("Waiting for cloudflare turnstile...")
     await tab.verify_cf(timeout=60.0)
     logger.info("Cloudflare turnstile bypassed")
@@ -58,14 +54,9 @@ async def amain():
 
     await browser.connection.send(
         cdp.browser.set_download_behavior(
-            behavior="allowAndName",
-            download_path=TEMP_DIR,
+            "deny",
             events_enabled=True,
         )
-    )
-    browser.connection.add_handler(
-        cdp.browser.DownloadWillBegin,
-        download_handler,
     )
 
     await ensure_cookies(browser=browser)
@@ -76,10 +67,6 @@ async def amain():
 
     # Clean-up
     await browser.stop()
-    try:
-        shutil.rmtree(TEMP_DIR)
-    except FileNotFoundError:
-        pass
 
 
 def main():
