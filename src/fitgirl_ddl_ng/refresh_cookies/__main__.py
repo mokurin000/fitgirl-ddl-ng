@@ -1,10 +1,13 @@
 import asyncio
 
+import typer
 import zendriver as zd
 from loguru import logger
 from zendriver import Browser, Config, cdp
 
 from fitgirl_ddl_ng import COOKIES_SESSION, cookies_valid
+
+app = typer.Typer(add_completion=False)
 
 BROWSER_INSTANCE = None
 
@@ -42,10 +45,10 @@ async def ensure_cookies(browser: Browser):
     return tab
 
 
-async def amain():
+async def async_main(force: bool):
     global BROWSER_INSTANCE
 
-    if cookies_valid():
+    if not force and cookies_valid():
         logger.warning("Cookies was up-to-date, no refresh needed")
         return
 
@@ -69,9 +72,17 @@ async def amain():
     await browser.stop()
 
 
-def main():
-    asyncio.run(amain())
+@app.command()
+def main(
+    force: bool = typer.Option(
+        False,
+        "--force",
+        "-f",
+        help="Ignore valid cookies and force a refresh",
+    ),
+):
+    asyncio.run(async_main(force))
 
 
 if __name__ == "__main__":
-    main()
+    app()
