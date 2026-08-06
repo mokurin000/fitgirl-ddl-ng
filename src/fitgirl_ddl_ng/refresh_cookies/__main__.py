@@ -76,7 +76,10 @@ async def amain():
 
     # Clean-up
     await browser.stop()
-    shutil.rmtree(TEMP_DIR)
+    try:
+        shutil.rmtree(TEMP_DIR)
+    except FileNotFoundError:
+        pass
 
 
 def main():
