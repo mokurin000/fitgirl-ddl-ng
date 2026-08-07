@@ -95,7 +95,11 @@ async def main(urls: list[str]):
 
             slug = urlparse(url).path.strip("/")
 
-            urls = await scrape_ff_links(tab, url)
+            try:
+                urls = await scrape_ff_links(tab, url)
+            except FuckingFastMissing as e:
+                logger.error(f"Failed to scrape {url}: {e}")
+                continue
 
             file = f"{slug}.txt"
             with open(file, "w", encoding="utf-8") as f:
