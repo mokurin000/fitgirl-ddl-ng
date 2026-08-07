@@ -106,6 +106,7 @@ async def main(urls: list[str]):
                 print(*urls, sep="\n", file=f)
             logger.info(f"Scraped: {file}")
     finally:
+        logger.info("Cleaning up...")
         await browser.stop()
 
 

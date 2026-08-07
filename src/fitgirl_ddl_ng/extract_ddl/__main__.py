@@ -81,6 +81,7 @@ async def export_aria2_input(urls_file: Path):
     output.write_text(aria2_input, encoding="utf-8")
     logger.info(f"Written: {output}")
 
+    logger.info("Cleaning up...")
     await browser.stop()
 
 

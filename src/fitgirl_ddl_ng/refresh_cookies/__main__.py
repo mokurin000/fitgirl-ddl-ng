@@ -68,6 +68,8 @@ async def async_main(force: bool):
         pattern="(cf_clearance|dlpass)",
     )
 
+    logger.info("Cleaning up...")
+
     # Clean-up
     await browser.stop()
 
