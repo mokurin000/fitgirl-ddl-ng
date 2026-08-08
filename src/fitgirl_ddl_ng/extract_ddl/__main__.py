@@ -72,7 +72,7 @@ async def export_aria2_input(urls_file: Path):
     await browser.cookies.load(COOKIES_SESSION)
 
     tab = await browser.get("https://fuckingfast.co")
-    await tab.wait_for_ready_state("interactive", timeout=60)
+    await tab.wait_for_ready_state("loading", timeout=60)
 
     aria2_input = await extract_ddl(tab, selected_urls)
 
