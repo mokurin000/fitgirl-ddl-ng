@@ -20,7 +20,7 @@ sed -i 's/#import site/import site/g' python3*._pth
 pip3.14 install ../.. -t Lib/site-packages
 
 # clean-up *.pyc
-for dir in "__pycache__" "tests" "*.dist-info"; do
+for dir in "__pycache__" "tests"; do
     find "Lib/site-packages" -name "$dir" -type d | xargs rm -rf
 done
 
