@@ -41,14 +41,12 @@ async def ensure_cookies(browser: Browser):
 
 async def refresh_cookies(force: bool):
     """Refresh cookies with a new headed Chrome instance"""
-    global BROWSER_INSTANCE
 
     if not force and cookies_valid():
         logger.warning("Cookies was up-to-date, no refresh needed")
         return
 
     browser = await zd.start(config=Config(headless=False))
-    BROWSER_INSTANCE = browser
 
     await browser.connection.send(
         zd.cdp.browser.set_download_behavior(

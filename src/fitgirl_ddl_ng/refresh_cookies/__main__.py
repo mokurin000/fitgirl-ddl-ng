@@ -5,8 +5,6 @@ from fitgirl_ddl_ng.refresh_cookies import refresh_cookies
 
 app = typer.Typer(add_completion=False)
 
-BROWSER_INSTANCE = None
-
 
 @app.command()
 def main(
