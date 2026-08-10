@@ -112,6 +112,7 @@ class MainFrame(wx.Frame):
 
         super().__init__(None, title="Fitgirl DDL", size=(720, 600))
         self.worker = worker
+        self.worker.frame = self
 
         panel = wx.Panel(self)
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -146,6 +147,17 @@ class MainFrame(wx.Frame):
 
         self.scrape_button.Enable(not running)
         self.status_bar.SetStatusText("Working..." if running else "Ready")
+
+    def bring_to_front(self) -> None:
+        """Raise the window and give it keyboard focus."""
+
+        self.Raise()
+        self.SetFocus()
+
+    def schedule_focus_restore(self) -> None:
+        """Re-raise the window once Chrome has stopped stealing focus."""
+
+        wx.CallLater(1500, self.bring_to_front)
 
     def on_scrape(self, _event) -> None:
         """Start the pipeline for the URLs in the input box."""
@@ -190,6 +202,7 @@ class GuiWorker(threading.Thread):
         """
 
         super().__init__(daemon=True)
+        self.frame: MainFrame | None = None
         self._loop: asyncio.AbstractEventLoop | None = None
         self._browser: zd.Browser | None = None
         self._tab: zd.Tab | None = None
@@ -249,6 +262,15 @@ class GuiWorker(threading.Thread):
                 )
             )
             self._tab = await self._browser.get("about:blank")
+            self._grab_focus_back()
+
+    def _grab_focus_back(self) -> None:
+        """Bring the main window back to the foreground after Chrome starts."""
+
+        if self.frame is None:
+            return
+        wx.CallAfter(self.frame.bring_to_front)
+        wx.CallAfter(self.frame.schedule_focus_restore)
 
     async def _run_game(self, url: str, slug: str) -> None:
         """Process a single fitgirl URL end to end."""
