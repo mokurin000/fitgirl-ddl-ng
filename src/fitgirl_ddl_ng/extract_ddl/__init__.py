@@ -25,7 +25,7 @@ def group_urls(urls: list[str]) -> dict[str, list[str]]:
     return groups
 
 
-async def extract_ddl(tab: Tab, urls: list[str]) -> str:
+async def extract_ddl(tab: Tab, urls: list[str], out_dir: str) -> str:
     result_text = ""
     for original_url in tqdm(urls):
         url_parse = urlparse(original_url)
@@ -63,7 +63,7 @@ async def extract_ddl(tab: Tab, urls: list[str]) -> str:
             continue
 
         result_text += f"""{direct_uri}
-    out={file_name}
+    out={out_dir}/{file_name}
     continue=true
 """
     return result_text

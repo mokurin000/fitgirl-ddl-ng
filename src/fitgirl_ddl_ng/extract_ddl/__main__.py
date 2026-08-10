@@ -91,7 +91,11 @@ async def export_aria2_input(urls_files: list[Path]):
     try:
         for urls_file, selected_urls in selected_plans:
             logger.info(f"Extracting {urls_file}...")
-            aria2_input = await extract_ddl(tab, selected_urls)
+            aria2_input = await extract_ddl(
+                tab,
+                selected_urls,
+                out_dir=urls_file.name.removesuffix(".txt"),
+            )
 
             output = urls_file.with_name(f"aria2-{urls_file.name}")
             output.parent.mkdir(parents=True, exist_ok=True)
