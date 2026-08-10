@@ -32,7 +32,7 @@ async def scrape_ff_links(tab: zd.Tab, url: str) -> list[str]:
     logger.info("Page loaded, scraping...")
 
     # Sometimes fitgirl put multiple "FileHoster: FuckingFast" in a post
-    filehoster_ff_atags = await tab.select_all(FILE_HOSTER_SINGLE)
+    filehoster_ff_atags = await tab.query_selector_all(FILE_HOSTER_SINGLE)
     filehoster_ff_atags = [
         tag
         for tag in filehoster_ff_atags
@@ -51,7 +51,7 @@ async def scrape_ff_links(tab: zd.Tab, url: str) -> list[str]:
             )
 
     filehoster_ff_a = filehoster_ff_atags.pop(0)
-    filehoster_ff_spoliers = await tab.select_all(FILE_HOSTER_SPOLIER)
+    filehoster_ff_spoliers = await tab.query_selector_all(FILE_HOSTER_SPOLIER)
 
     if not filehoster_ff_spoliers:
         single_url = filehoster_ff_a.attrs.get("href")
