@@ -7,12 +7,9 @@ import zendriver as zd
 from loguru import logger
 
 from fitgirl_ddl_ng import cookies_valid, COOKIES_SESSION
-from fitgirl_ddl_ng.extract_ddl import extract_ddl, group_urls
+from fitgirl_ddl_ng.extract_ddl import DEFAULT_SELECT_MARKERS, extract_ddl, group_urls
 
 app = typer.Typer(add_completion=False)
-
-DEFAULT_SELECT_MARKERS = ("fitgirl-repacks.site", "FIXED")
-"""Group names containing any marker are pre-selected in the selection prompt."""
 
 
 async def select_groups(groups: dict[str, list[str]]) -> list[str]:

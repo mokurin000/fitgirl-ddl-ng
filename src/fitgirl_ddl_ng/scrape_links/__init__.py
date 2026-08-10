@@ -72,7 +72,7 @@ async def scrape_ff_links(tab: zd.Tab, url: str) -> list[str]:
             for tag in atags:
                 item_url = tag.attrs.get("href")
                 if item_url is None:
-                    logger.warning()
+                    logger.warning("Missing spolier link: fitgirl side bug!")
                     continue
                 urls.append(item_url)
 

@@ -14,6 +14,9 @@ else:
     logger.remove()  # Remove default handler
     logger.add(lambda msg: tqdm.write(msg, end=""), colorize=True)
 
+DEFAULT_SELECT_MARKERS = ("fitgirl-repacks.site", "FIXED")
+"""Group names containing any marker are pre-selected in the selection prompt."""
+
 _SUFFIX_PATTERN = re.compile(r"\.part\d+\.rar$|\.rar$")
 
 
