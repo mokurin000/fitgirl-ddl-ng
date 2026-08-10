@@ -25,4 +25,4 @@ for dir in "__pycache__" "tests"; do
 done
 
 cd ..
-cp ../scripts/*.bat .
+cp ../scripts/cli/*.bat .
