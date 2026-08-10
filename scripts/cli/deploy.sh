@@ -1,4 +1,4 @@
-mkdir -p deploy && cd deploy || exit 1
+mkdir -p deploy-cli && cd deploy-cli || exit 1
 
 python_ver=3.14
 python_full_ver=${python_ver}.7
@@ -17,7 +17,7 @@ unzip "../${python_zip}.zip"
 # Enable the site-packages support
 sed -i 's/#import site/import site/g' python3*._pth
 # Install dependencies
-pip3.14 install ../.. -t Lib/site-packages
+pip3.14 install "../..[cli]" -t Lib/site-packages
 
 # clean-up *.pyc
 for dir in "__pycache__" "tests"; do

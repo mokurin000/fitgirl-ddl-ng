@@ -1,4 +1,4 @@
-cd deploy || exit 1
+cd deploy-cli || exit 1
 rm -rf fitgirl-ddl-ng || exit 1
 
 mkdir fitgirl-ddl-ng

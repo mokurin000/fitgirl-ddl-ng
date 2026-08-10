@@ -6,9 +6,6 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "loguru>=0.7.3",
-    "questionary>=2.1.1",
-    "tqdm>=4.70.0",
-    "typer>=0.27.1",
     "zendriver>=0.15.5",
 ]
 
@@ -16,10 +13,17 @@ dependencies = [
 package = true
 
 [[tool.uv.index]]
-url = "https://mirrors.bfsu.edu.cn/pypi/web/simple/"
+url = "https://mirrors6.bfsu.edu.cn/pypi/web/simple/"
 default = true
 
 [project.scripts]
 refresh-cookies = "fitgirl_ddl_ng.refresh_cookies.__main__:app"
 scrape-fitgirl = "fitgirl_ddl_ng.scrape_links.__main__:app"
 extract-ddl = "fitgirl_ddl_ng.extract_ddl.__main__:app"
+
+[project.optional-dependencies]
+cli = [
+    "questionary>=2.1.1",
+    "tqdm>=4.70.0",
+    "typer>=0.27.1",
+]

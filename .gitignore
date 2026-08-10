@@ -1,6 +1,6 @@
 # Cookies store
 cookies.dat
-/deploy
+/deploy-*
 
 # Scrape/Extraction output
 /*.txt
