@@ -80,7 +80,7 @@ async def export_aria2_input(urls_files: list[Path]):
         selected_plans.append((urls_file, selected_urls))
 
     # Then: start the browser once and crawl each file in order
-    browser = await zd.start()
+    browser = await zd.start(config=zd.Config(headless=True))
 
     # Load cookies for fuckingfast
     await browser.cookies.load(COOKIES_SESSION)

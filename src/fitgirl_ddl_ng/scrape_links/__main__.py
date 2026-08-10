@@ -80,7 +80,7 @@ async def scrape_ff_links(tab: zd.Tab, url: str) -> list[str]:
 
 
 async def main(urls: list[str]):
-    browser = await zd.start()
+    browser = await zd.start(config=zd.Config(headless=True))
     tab = await browser.get()
 
     try:
