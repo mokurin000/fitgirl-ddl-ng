@@ -70,7 +70,7 @@ async def extract_ddl(tab: Tab, urls: list[str], out_dir: str) -> str:
         try:
             direct_uri = result["headers"]["hx-redirect"]
         except KeyError:
-            logger.error(f"Skipping {original_url} due to missing direct link")
+            logger.error(f"Skipping {original_url}: status={result['status']}")
             continue
 
         result_text += f"""{direct_uri}

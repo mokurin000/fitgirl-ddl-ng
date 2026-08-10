@@ -39,14 +39,22 @@ async def ensure_cookies(browser: Browser):
         await asyncio.sleep(0.5)
 
 
-async def refresh_cookies(force: bool):
-    """Refresh cookies with a new headed Chrome instance"""
+async def refresh_cookies(force: bool, browser: Browser | None = None):
+    """
+    Refresh cookies of fuckingfast.co so direct links can be extracted.
+
+    :param force: refresh even when the stored cookies are still valid
+    :param browser: an existing headed browser to reuse, or None to start one
+    :return: None
+    """
 
     if not force and cookies_valid():
         logger.warning("Cookies was up-to-date, no refresh needed")
         return
 
-    browser = await zd.start(config=Config(headless=False))
+    owns_browser = browser is None
+    if owns_browser:
+        browser = await zd.start(config=Config(headless=False))
 
     await browser.connection.send(
         zd.cdp.browser.set_download_behavior(
@@ -61,7 +69,6 @@ async def refresh_cookies(force: bool):
         pattern="(cf_clearance|dlpass)",
     )
 
-    logger.info("Cleaning up...")
-
-    # Clean-up
-    await browser.stop()
+    if owns_browser:
+        logger.info("Cleaning up...")
+        await browser.stop()
