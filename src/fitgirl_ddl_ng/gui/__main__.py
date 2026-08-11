@@ -29,6 +29,7 @@ def main() -> None:
         enqueue=True,
         format="{time:HH:mm:ss} {level:<8} {message}",
     )
+    frame.Centre()
     frame.Show()
     worker.start()
     app.MainLoop()

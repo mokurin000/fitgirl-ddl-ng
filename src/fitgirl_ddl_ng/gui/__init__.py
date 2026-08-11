@@ -297,7 +297,8 @@ class GuiWorker(threading.Thread):
         await self._tab.wait_for_ready_state(until="complete", timeout=60.0)
         text = await extract_ddl(self._tab, chosen, out_dir=slug)
 
-        out_file = Path.cwd() / f"aria2-{slug}.txt"
+        out_file = Path.cwd() / "aria2" / f"{slug}.txt"
+        out_file.parent.mkdir(exist_ok=True)
         out_file.write_text(text, encoding="utf-8")
         logger.info(f"{slug}: saved {out_file}")
 
