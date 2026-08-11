@@ -121,12 +121,27 @@ class MainFrame(wx.Frame):
         self.urls_text = wx.TextCtrl(panel, style=wx.TE_MULTILINE)
         self.urls_text.SetHint("https://fitgirl-repacks.site/<game-slug>/")
         self.scrape_button = wx.Button(panel, label="Scrape")
+        self.game_gauge = wx.Gauge(panel, range=100)
+        self.overall_gauge = wx.Gauge(panel, range=100)
         log_label = wx.StaticText(panel, label="Log:")
         self.log_text = wx.TextCtrl(panel, style=wx.TE_MULTILINE | wx.TE_READONLY)
 
+        button_row = wx.BoxSizer(wx.HORIZONTAL)
+        button_row.Add(self.scrape_button, 0, wx.ALL, 8)
+        button_row.Add(
+            self.game_gauge,
+            1,
+            wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM | wx.TOP,
+            8,
+        )
+
+        self._pulse_timer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self._on_pulse, self._pulse_timer)
+
         sizer.Add(hint, 0, wx.ALL, 8)
         sizer.Add(self.urls_text, 2, wx.EXPAND | wx.LEFT | wx.RIGHT, 8)
-        sizer.Add(self.scrape_button, 0, wx.ALL, 8)
+        sizer.Add(button_row, 0, wx.EXPAND)
+        sizer.Add(self.overall_gauge, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
         sizer.Add(log_label, 0, wx.LEFT | wx.RIGHT, 8)
         sizer.Add(self.log_text, 3, wx.EXPAND | wx.ALL, 8)
         panel.SetSizer(sizer)
@@ -147,6 +162,40 @@ class MainFrame(wx.Frame):
 
         self.scrape_button.Enable(not running)
         self.status_bar.SetStatusText("Working..." if running else "Ready")
+
+    def _on_pulse(self, _event) -> None:
+        """Advance the indeterminate per-game bar by one pulse step."""
+
+        self.game_gauge.Pulse()
+
+    def game_progress_start(self) -> None:
+        """Begin the indeterminate per-game bar during the prep phase."""
+
+        self._pulse_timer.Start(50)
+
+    def game_progress_range(self, total: int) -> None:
+        """Switch the per-game bar to determinate with the given range."""
+
+        self._pulse_timer.Stop()
+        self.game_gauge.SetRange(max(1, total))
+        self.game_gauge.SetValue(0)
+
+    def game_progress_update(self, done: int) -> None:
+        """Set the current per-game extraction step."""
+
+        self.game_gauge.SetValue(done)
+
+    def game_progress_finish(self) -> None:
+        """Stop pulsing and reset the per-game bar for the next game."""
+
+        self._pulse_timer.Stop()
+        self.game_gauge.SetValue(0)
+
+    def overall_progress(self, total: int, done: int) -> None:
+        """Set the overall bar's range and current value."""
+
+        self.overall_gauge.SetRange(max(1, total))
+        self.overall_gauge.SetValue(done)
 
     def bring_to_front(self) -> None:
         """Raise the window and give it keyboard focus."""
@@ -207,6 +256,8 @@ class GuiWorker(threading.Thread):
         self._browser: zd.Browser | None = None
         self._tab: zd.Tab | None = None
 
+        self._cookies_initialized = False
+
     def run(self) -> None:
         """Entry point of the background thread."""
 
@@ -240,7 +291,10 @@ class GuiWorker(threading.Thread):
         """
 
         await self._ensure_browser()
-        for url in urls:
+        total = len(urls)
+        if self.frame is not None:
+            wx.CallAfter(self.frame.overall_progress, total, 0)
+        for index, url in enumerate(urls, start=1):
             slug = slug_from(url)
             try:
                 await self._run_game(url, slug)
@@ -248,6 +302,10 @@ class GuiWorker(threading.Thread):
                 logger.warning(f"{slug}: fuckingfast.co mirror not available, skipped")
             except Exception:
                 logger.exception(f"{slug}: failed")
+            finally:
+                if self.frame is not None:
+                    wx.CallAfter(self.frame.game_progress_finish)
+                    wx.CallAfter(self.frame.overall_progress, total, index)
 
     async def _ensure_browser(self) -> None:
         """Start the shared browser and a tab on first use."""
@@ -275,6 +333,9 @@ class GuiWorker(threading.Thread):
     async def _run_game(self, url: str, slug: str) -> None:
         """Process a single fitgirl URL end to end."""
 
+        if self.frame is not None:
+            wx.CallAfter(self.frame.game_progress_start)
+
         logger.info(f"{slug}: scraping links...")
         ff_links = await scrape_ff_links(self._tab, url)
         logger.info(f"{slug}: found {len(ff_links)} link(s)")
@@ -282,7 +343,12 @@ class GuiWorker(threading.Thread):
         logger.info(
             f"{slug}: refreshing cookies, complete the Cloudflare check in Chrome"
         )
-        await refresh_cookies(force=True, browser=self._browser)
+
+        await refresh_cookies(
+            force=not self._cookies_initialized,
+            browser=self._browser,
+        )
+        self._cookies_initialized = True
 
         groups = group_urls(ff_links)
         selected = await self._ask_group_selection(slug, groups)
@@ -291,16 +357,29 @@ class GuiWorker(threading.Thread):
             return
 
         chosen = [link for group in selected for link in groups[group]]
+        if self.frame is not None:
+            wx.CallAfter(self.frame.game_progress_range, len(chosen))
         logger.info(f"{slug}: extracting direct links...")
 
         await self._tab.get(_FUCKING_FAST)
         await self._tab.wait_for_ready_state(until="complete", timeout=60.0)
-        text = await extract_ddl(self._tab, chosen, out_dir=slug)
+        text = await extract_ddl(
+            self._tab,
+            chosen,
+            out_dir=slug,
+            progress=self._on_extract_progress,
+        )
 
         out_file = Path.cwd() / "aria2" / f"{slug}.txt"
         out_file.parent.mkdir(exist_ok=True)
         out_file.write_text(text, encoding="utf-8")
         logger.info(f"{slug}: saved {out_file}")
+
+    def _on_extract_progress(self, done: int, _total: int) -> None:
+        """Forward per-URL extraction progress to the UI thread."""
+
+        if self.frame is not None:
+            wx.CallAfter(self.frame.game_progress_update, done)
 
     async def _ask_group_selection(
         self, slug: str, groups: dict[str, list[str]]

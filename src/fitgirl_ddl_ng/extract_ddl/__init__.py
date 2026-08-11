@@ -1,4 +1,5 @@
 import re
+from typing import Callable
 from urllib.parse import urlparse
 
 from zendriver import Tab
@@ -34,11 +35,21 @@ def group_urls(urls: list[str]) -> dict[str, list[str]]:
     return groups
 
 
-async def extract_ddl(tab: Tab, urls: list[str], out_dir: str) -> str:
+async def extract_ddl(
+    tab: Tab,
+    urls: list[str],
+    out_dir: str,
+    progress: Callable[[int, int], None] | None = None,
+) -> str:
     result_text = ""
+    total = len(urls)
     if _HAS_TQDM:
         urls = tqdm(urls)
+    done = 0
     for original_url in urls:
+        done += 1
+        if progress is not None:
+            progress(done, total)
         url_parse = urlparse(original_url)
         file_id = url_parse.path.removeprefix("/")
         file_name = url_parse.fragment
