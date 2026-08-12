@@ -48,7 +48,7 @@ for dir in "__pycache__" "tests"; do
 done
 # Remove python interceptors
 rm Lib/python{,w}.exe Lib/python${python_num_ver}._pth
-mv Lib/python${python_num_ver}.dll .
+mv Lib/python${python_num_ver}.dll Lib/python3.dll .
 
 cat > "python${python_num_ver}._pth" <<EOF
 Lib/
