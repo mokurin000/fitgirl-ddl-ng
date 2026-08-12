@@ -7,12 +7,24 @@ Next generation of `fitgirl-ddl`, working with latest `fuckingfast.co`.
 - `Chrome`, `Chromium`, or `Brave` browser installed.
 - Network connection that could pass the cloudflare turnstile.
 
+## Development
+
+```bash
+uv sync --dev --all-extras
+```
+
+Or,
+
+```bash
+pip install -e .[cli,gui]
+```
+
 ## Scrape urls
 
 For example,
 
 ```bash
-uv run scrape-fitgirl https://fitgirl-repacks.site/waterpark-simulator/
+uv run --extra cli scrape-fitgirl https://fitgirl-repacks.site/waterpark-simulator/
 ```
 
 you would have `waterpark-simulator.txt`.
@@ -22,11 +34,11 @@ you would have `waterpark-simulator.txt`.
 Refresh `FuckingFast.co` cookies, so you could perform DDL extraction in 25 minutes
 
 ```bash
-uv run refresh-cookies
+uv run --extra cli refresh-cookies
 ```
 
 ## DDL Extraction
 
 ```bash
-uv run extract-ddl waterpark-simulator.txt
+uv run --extra cli extract-ddl waterpark-simulator.txt
 ```
