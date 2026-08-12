@@ -22,6 +22,10 @@ def main() -> None:
     """
 
     app = wx.App()
+    # Enable the dark mode support on Windows
+    if hasattr(app, "MSWEnableDarkMode"):
+        app.MSWEnableDarkMode(wx.App.DarkMode_Auto)
+
     worker = GuiWorker()
     frame = MainFrame(worker)
     logger.add(
