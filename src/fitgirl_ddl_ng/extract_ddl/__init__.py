@@ -9,7 +9,7 @@ try:
     from tqdm.asyncio import tqdm
 
     _HAS_TQDM = True
-except ImportError, ModuleNotFoundError:
+except (ImportError, ModuleNotFoundError):
     _HAS_TQDM = False
 else:
     logger.remove()  # Remove default handler
