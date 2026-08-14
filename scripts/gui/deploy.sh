@@ -50,9 +50,25 @@ done
 rm Lib/python{,w}.exe Lib/python${python_num_ver}._pth
 mv Lib/python${python_num_ver}.dll Lib/python3.dll .
 
+rm -rf Lib/site-packages/bin
+find Lib/site-packages \
+    -name "py.typed" \
+    -o -name "*.pyi" \
+    -o -name "cython" | xargs rm -rf
+
+(
+    cd Lib/site-packages
+    rmdir */
+    7z a -sdel -mx9 -mfb=273 ../library.zip \
+        *.dist-info mss wrapt emoji websockets \
+        zendriver colorama deprecated loguru \
+        win32_setctime asyncio_atexit.py
+)
+
 cat > "python${python_num_ver}._pth" <<EOF
 Lib/
 Lib/python${python_num_ver}.zip
+Lib/library.zip
 import site
 EOF
 
