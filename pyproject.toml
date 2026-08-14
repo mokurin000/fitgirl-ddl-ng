@@ -12,10 +12,6 @@ dependencies = [
 [tool.uv]
 package = true
 
-[[tool.uv.index]]
-url = "https://mirrors6.bfsu.edu.cn/pypi/web/simple/"
-default = true
-
 [project.scripts]
 refresh-cookies = "fitgirl_ddl_ng.refresh_cookies.__main__:app"
 scrape-fitgirl = "fitgirl_ddl_ng.scrape_links.__main__:app"
