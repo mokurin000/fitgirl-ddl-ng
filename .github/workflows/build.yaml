@@ -1,0 +1,73 @@
+name: 🚀 Deploy GUI
+
+on:
+    push:
+        tags:
+            - "*"
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+env:
+    PYTHON_VERSION: "3.12.10"
+
+jobs:
+    deploy:
+        name: 🪟 Windows GUI Build
+        runs-on: windows-2022
+
+        steps:
+            - name: 📥 Checkout
+              uses: actions/checkout@v7
+
+            - name: 🦀 Set up Rust
+              uses: dtolnay/rust-toolchain@nightly
+              with:
+                  components: rust-src
+
+            - name: ⚡ Set up uv
+              uses: astral-sh/setup-uv@v10.0.0
+
+            - name: 🔍 Verify build environment
+              shell: bash
+              run: |
+                  echo "🔧 Git:"
+                  git --version
+
+                  echo "📦 7-Zip:"
+                  7z
+
+                  echo "🌐 curl:"
+                  curl --version
+
+                  echo "🐍 Python:"
+                  python --version
+
+                  echo "📦 pip:"
+                  pip${PYTHON_VERSION%.*} --version
+
+                  echo "⚡ uv:"
+                  uv --version
+
+                  echo "🦀 Cargo:"
+                  cargo --version
+
+                  echo "🦀 Rust:"
+                  rustc --version
+
+            - name: 🏗️ Build deployment
+              shell: bash
+              run: |
+                  bash scripts/gui/deploy.sh "${PYTHON_VERSION}"
+
+            - name: 🗜️ Create archive
+              shell: bash
+              run: |
+                  bash scripts/gui/package.sh
+
+            - name: 📤 Upload archive artifact
+              uses: actions/upload-artifact@v7
+              with:
+                  name: fitgirl-ddl-ngui-${{ github.ref_name }}-archive
+                  path: "deploy-gui/fitgirl-ddl-ngui.exe"
