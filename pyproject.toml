@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "loguru>=0.7.3",
-    "zendriver @ git+https://github.com/mokurin000/zendriver@feat/support-edge",
+    "zendriver>=0.16.0",
 ]
 
 [tool.uv]
