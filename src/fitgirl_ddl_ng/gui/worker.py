@@ -101,9 +101,13 @@ class GuiWorker(threading.Thread):
     async def _ensure_browser(self) -> None:
         """Start the shared browser and a tab on first use."""
 
-        if self._browser is None:
+        if self._browser is None or self._browser.stopped:
             logger.info("Starting Chrome...")
+
+            # Spawning new session would invalidate cookies
+            self._cookies_initialized = False
             self._browser = await zd.start(config=zd.Config(headless=False))
+
             await self._browser.connection.send(
                 zd.cdp.browser.set_download_behavior(
                     "deny",
