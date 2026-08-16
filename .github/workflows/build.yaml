@@ -3,11 +3,11 @@ name: 🚀 Deploy GUI
 on:
     push:
         tags:
-            - "*"
+            - "v*"
     workflow_dispatch:
 
 permissions:
-    contents: read
+    contents: write
 
 env:
     PYTHON_VERSION: "3.12.10"
@@ -71,3 +71,13 @@ jobs:
               with:
                   name: fitgirl-ddl-ngui-${{ github.ref_name }}-archive
                   path: "deploy-gui/fitgirl-ddl-ng.exe"
+
+            - name: 🚀 Publish to GitHub Release
+              if: startsWith(github.ref, 'refs/tags/')
+              uses: softprops/action-gh-release@v2
+              with:
+                  files: "deploy-gui/fitgirl-ddl-ng.exe"
+                  name: ${{ github.ref_name }}
+                  tag_name: ${{ github.ref_name }}
+                  draft: false
+                  prerelease: false
