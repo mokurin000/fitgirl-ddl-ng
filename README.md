@@ -4,7 +4,7 @@ Next generation of `fitgirl-ddl`, working with latest `fuckingfast.co`.
 
 ## Prerequisites
 
-- `Chrome`, `Chromium`, or `Brave` browser installed.
+- `Chrome`, `Microsoft Edge`, `Chromium`, or `Brave` browser installed.
 - Network connection that could pass the cloudflare turnstile.
 
 ## Development
