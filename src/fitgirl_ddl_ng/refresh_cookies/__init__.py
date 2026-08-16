@@ -9,6 +9,9 @@ from fitgirl_ddl_ng import COOKIES_SESSION, cookies_valid
 
 async def ensure_cookies(browser: Browser):
     """Refresh cookies of fuckingfast.co, the `browser` must be NOT headless"""
+    # Force refreshing cookies from a clean state
+    await browser.cookies.clear()
+
     tab = await browser.get(
         "https://fuckingfast.co/oemaevh39h2t#Skills_and_Raids_--_fitgirl-repacks.site_--_.rar"
     )
