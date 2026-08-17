@@ -1,3 +1,8 @@
+## [unreleased]
+
+### 📚 Documentation
+
+- Add changelog.md
 ## [0.4.3] - 2026-08-16
 
 ### 💼 Other
@@ -5,6 +10,35 @@
 - Migrate to upstream now
 - Keep clean when repopulating cookies
 ## [0.4.2] - 2026-08-16
+
+### 🚀 Features
+
+- Support Microsoft Edge
+
+### 🐛 Bug Fixes
+
+- Do not add hard-coded mirror
+- Handle browser closed by user after scraped
+
+### 💼 Other
+
+- Fix python3.dll must be in the directory
+- Support python 3.11+
+
+### 📚 Documentation
+
+- *(readme)* Fix uv commands with the extra group
+
+### ⚡ Performance
+
+- Enhance performance on HDDs
+
+### ⚙️ Miscellaneous Tasks
+
+- *(windows)* Deploy packaged self-extraction LZMA2 PE
+- Fix packaged path
+- Release on new tag
+## [0.4.0] - 2026-08-12
 
 ### 🚀 Features
 
@@ -17,7 +51,6 @@
 - Support extract multiple files in single instance
 - Implement basic simple GUI
 - Enable auto dark mode support
-- Support Microsoft Edge
 
 ### 🐛 Bug Fixes
 
@@ -25,8 +58,6 @@
 - Fitgirl does not require ff cookies
 - Ignore filenotfound error
 - Handle missing fuckingfast links
-- Do not add hard-coded mirror
-- Handle browser closed by user after scraped
 
 ### 💼 Other
 
@@ -58,8 +89,6 @@
 - Centre window, save to aria2/
 - Per-game & per-file progress bars
 - Remove the previously packged exe
-- Fix python3.dll must be in the directory
-- Support python 3.11+
 
 ### 🚜 Refactor
 
@@ -74,16 +103,8 @@
 - *(readme)* Prerequisites
 - *(readme)* Package using python-embed
 - *(readme)* Bundle commands
-- *(readme)* Fix uv commands with the extra group
-
-### ⚡ Performance
-
-- Enhance performance on HDDs
 
 ### ⚙️ Miscellaneous Tasks
 
 - Initial PoC of `dlpass` automation
 - The `BROWSER_INSTANCE` was unused
-- *(windows)* Deploy packaged self-extraction LZMA2 PE
-- Fix packaged path
-- Release on new tag
