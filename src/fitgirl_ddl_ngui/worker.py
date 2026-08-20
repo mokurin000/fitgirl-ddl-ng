@@ -12,9 +12,9 @@ import zendriver as zd
 from loguru import logger
 
 from fitgirl_ddl_ng.extract_ddl import extract_ddl, group_urls
-from fitgirl_ddl_ngui.ui.group_dialog import GroupSelectDialog
 from fitgirl_ddl_ng.refresh_cookies import refresh_cookies
 from fitgirl_ddl_ng.scrape_links import FuckingFastMissing, scrape_ff_links
+from fitgirl_ddl_ngui.ui.group_dialog import GroupSelectDialog
 
 if TYPE_CHECKING:
     from fitgirl_ddl_ngui.ui.main_frame import MainFrame
