@@ -1,8 +1,21 @@
 ## [unreleased]
 
+### 🐛 Bug Fixes
+
+- Stuck at some edge cases
+
+### 🚜 Refactor
+
+- Standalone module for the GUI part
+
 ### 📚 Documentation
 
 - Add changelog.md
+- Update changelog.md
+
+### ⚙️ Miscellaneous Tasks
+
+- Re-format import orders
 ## [0.4.3] - 2026-08-16
 
 ### 💼 Other
