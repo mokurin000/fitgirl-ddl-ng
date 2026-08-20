@@ -1,10 +1,54 @@
 import asyncio
 
 from loguru import logger
-from zendriver import Browser, Config
+from zendriver import Browser, Config, Tab
+from zendriver.cdp.runtime import BindingCalled
 import zendriver as zd
 
 from fitgirl_ddl_ng import COOKIES_SESSION, cookies_valid
+
+
+async def log_xhr_requests(tab: Tab):
+    async def on_log(event: BindingCalled):
+        logger.info(event.payload)
+
+    await tab.send(zd.cdp.runtime.add_binding(name="pythonLog"))
+
+    tab.add_handler(
+        BindingCalled,
+        on_log,
+    )
+
+    await tab.evaluate("""
+(() => {
+    const oldOpen = XMLHttpRequest.prototype.open;
+    const oldSend = XMLHttpRequest.prototype.send;
+
+    XMLHttpRequest.prototype.open = function(method, url, ...args) {
+        this.__log_url = url;
+        this.__log_method = method;
+        return oldOpen.call(this, method, url, ...args);
+    };
+
+    XMLHttpRequest.prototype.send = function(body) {
+        if (this.__log_url?.includes("/f/")) {
+            pythonLog(
+                `[XHR] ${this.__log_method} ${this.__log_url}`
+            );
+        }
+
+        this.addEventListener("load", () => {
+            if (this.__log_url?.includes("/f/")) {
+                pythonLog(
+                    `[XHR] ${this.__log_method} ${this.__log_url} -> ${this.status}`
+                );
+            }
+        });
+
+        return oldSend.call(this, body);
+    };
+})();
+""")
 
 
 async def ensure_cookies(browser: Browser):
@@ -29,7 +73,9 @@ async def ensure_cookies(browser: Browser):
         await asyncio.sleep(0.5)
 
     # Pop-up ads
+    await log_xhr_requests(tab)
     await button.click()
+    logger.info("Button clicked, waiting for event...")
 
     dlpass = None
 
