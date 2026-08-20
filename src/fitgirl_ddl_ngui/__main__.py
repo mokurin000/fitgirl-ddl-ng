@@ -4,7 +4,7 @@ import wx
 
 from loguru import logger
 
-from fitgirl_ddl_ng.gui import GuiWorker, MainFrame
+from fitgirl_ddl_ngui import GuiWorker, MainFrame
 
 
 def make_log_sink(frame: MainFrame):

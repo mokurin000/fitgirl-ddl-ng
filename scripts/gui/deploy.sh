@@ -44,7 +44,7 @@ echo "pip command:    ${pip_cmd}"
 
     uv run generate.py \
         "${BIN_NAME}" \
-        fitgirl_ddl_ng.gui.__main__:main
+        fitgirl_ddl_ngui.__main__:main
 
     cargo +nightly build --release
 )

@@ -8,7 +8,7 @@ import wx
 from loguru import logger
 
 if TYPE_CHECKING:
-    from fitgirl_ddl_ng.gui.worker import GuiWorker
+    from fitgirl_ddl_ngui.worker import GuiWorker
 
 _FITGIRL_URL_RE = re.compile(r"https://fitgirl-repacks\.site/[^/?#\s]+/?")
 
