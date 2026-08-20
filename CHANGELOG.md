@@ -1,3 +1,12 @@
+## [0.4.5] - 2026-08-20
+
+### 💼 Other
+
+- Monkey-patch `XMLHttpRequest` to capture /go requests
+
+### ⚙️ Miscellaneous Tasks
+
+- Bump version to 0.4.4
 ## [0.4.4] - 2026-08-20
 
 ### 🐛 Bug Fixes
@@ -11,6 +20,8 @@
 ### 📚 Documentation
 
 - Add changelog.md
+- Update changelog.md
+- *(changelog)* Minor update
 
 ### ⚙️ Miscellaneous Tasks
 
