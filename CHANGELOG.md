@@ -1,4 +1,4 @@
-## [unreleased]
+## [0.4.4] - 2026-08-20
 
 ### 🐛 Bug Fixes
 
@@ -11,7 +11,6 @@
 ### 📚 Documentation
 
 - Add changelog.md
-- Update changelog.md
 
 ### ⚙️ Miscellaneous Tasks
 
