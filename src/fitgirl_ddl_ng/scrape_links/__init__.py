@@ -1,3 +1,5 @@
+import asyncio
+
 from loguru import logger
 import zendriver as zd
 
@@ -27,8 +29,10 @@ async def scrape_ff_links(tab: zd.Tab, url: str) -> list[str]:
 
     logger.info(f"Goto {url}...")
 
-    await tab.get(url)
-    await tab.wait_for_ready_state(until="interactive", timeout=60)
+    await asyncio.gather(
+        tab.get(url),
+        tab.wait_for_ready_state(until="interactive", timeout=60),
+    )
     logger.info("Page loaded, scraping...")
 
     # Sometimes fitgirl put multiple "FileHoster: FuckingFast" in a post
