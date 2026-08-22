@@ -59,6 +59,7 @@ async def ensure_cookies(browser: Browser):
     tab = await browser.get(
         "https://fuckingfast.co/oemaevh39h2t#Skills_and_Raids_--_fitgirl-repacks.site_--_.rar"
     )
+    await tab.wait_for_ready_state(until="complete", timeout=60)
 
     logger.info("Waiting for cloudflare turnstile...")
     await tab.verify_cf(timeout=60.0)
@@ -68,14 +69,17 @@ async def ensure_cookies(browser: Browser):
     while True:
         html = await button.get_html()
         if 'style="opacity:0.5;cursor:not-allowed"' not in html:
-            logger.info("Download button ready")
+            logger.info("Download button highlighted")
             break
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(0.1)
+    logger.info("Waiting for 1s for button really operable")
+    await asyncio.sleep(1.0)
 
     # Pop-up ads
     await log_xhr_requests(tab)
     await button.click()
     logger.info("Button clicked, waiting for event...")
+    logger.info("Should have '[XHR]', otherwise report a bug!")
 
     dlpass = None
 
