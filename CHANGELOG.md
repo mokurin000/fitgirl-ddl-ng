@@ -1,3 +1,13 @@
+## [0.4.6] - 2026-08-22
+
+### 🐛 Bug Fixes
+
+- Cloudflare/button stuck issue
+
+### 📚 Documentation
+
+- *(changelog)* Update changelog for 0.4.5
+- Update issue templates
 ## [0.4.5] - 2026-08-20
 
 ### 💼 Other
