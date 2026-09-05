@@ -1,3 +1,12 @@
+## [0.4.7] - 2026-09-05
+
+### 🐛 Bug Fixes
+
+- Bypass cloudflare turnstile
+
+### 💼 Other
+
+- Reduce wait time to load the whole fitgirl page
 ## [0.4.6] - 2026-08-22
 
 ### 🐛 Bug Fixes
@@ -8,6 +17,7 @@
 
 - *(changelog)* Update changelog for 0.4.5
 - Update issue templates
+- *(changelog)* Update changelog for 0.4.6
 ## [0.4.5] - 2026-08-20
 
 ### 💼 Other
