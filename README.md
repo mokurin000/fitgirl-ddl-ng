@@ -29,14 +29,6 @@ uv run --extra cli scrape-fitgirl https://fitgirl-repacks.site/waterpark-simulat
 
 you would have `waterpark-simulator.txt`.
 
-## Refresh cookies
-
-Refresh `FuckingFast.co` cookies, so you could perform DDL extraction in 25 minutes
-
-```bash
-uv run --extra cli refresh-cookies
-```
-
 ## DDL Extraction
 
 ```bash

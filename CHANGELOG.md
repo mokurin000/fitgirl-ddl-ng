@@ -1,3 +1,8 @@
+## [0.4.8] - 2026-09-20
+
+### 🐛 Bug Fixes
+
+- Cloudflare turnstile of fuckingfast is gone
 ## [0.4.7] - 2026-09-05
 
 ### 🐛 Bug Fixes
@@ -7,6 +12,10 @@
 ### 💼 Other
 
 - Reduce wait time to load the whole fitgirl page
+
+### ⚙️ Miscellaneous Tasks
+
+- Bump version to 0.4.7
 ## [0.4.6] - 2026-08-22
 
 ### 🐛 Bug Fixes
