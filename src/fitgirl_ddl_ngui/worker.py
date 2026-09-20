@@ -12,7 +12,6 @@ import zendriver as zd
 from loguru import logger
 
 from fitgirl_ddl_ng.extract_ddl import extract_ddl, group_urls
-from fitgirl_ddl_ng.refresh_cookies import refresh_cookies
 from fitgirl_ddl_ng.scrape_links import FuckingFastMissing, scrape_ff_links
 from fitgirl_ddl_ngui.ui.group_dialog import GroupSelectDialog
 
@@ -46,8 +45,6 @@ class GuiWorker(threading.Thread):
         self._loop: asyncio.AbstractEventLoop | None = None
         self._browser: zd.Browser | None = None
         self._tab: zd.Tab | None = None
-
-        self._cookies_initialized = False
 
     def run(self) -> None:
         """Entry point of the background thread."""
@@ -105,7 +102,6 @@ class GuiWorker(threading.Thread):
             logger.info("Starting Chrome...")
 
             # Spawning new session would invalidate cookies
-            self._cookies_initialized = False
             self._browser = await zd.start(config=zd.Config(headless=False))
 
             await self._browser.connection.send(
@@ -134,16 +130,6 @@ class GuiWorker(threading.Thread):
         logger.info(f"{slug}: scraping links...")
         ff_links = await scrape_ff_links(self._tab, url)
         logger.info(f"{slug}: found {len(ff_links)} link(s)")
-
-        logger.info(
-            f"{slug}: refreshing cookies, complete the Cloudflare check in Chrome"
-        )
-
-        await refresh_cookies(
-            force=not self._cookies_initialized,
-            browser=self._browser,
-        )
-        self._cookies_initialized = True
 
         groups = group_urls(ff_links)
         selected = await self._ask_group_selection(slug, groups)
