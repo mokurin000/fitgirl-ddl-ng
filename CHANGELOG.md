@@ -1,8 +1,17 @@
+## [0.4.9] - 2026-09-21
+
+### 🚀 Features
+
+- Anonymous logs capturing
 ## [0.4.8] - 2026-09-20
 
 ### 🐛 Bug Fixes
 
 - Cloudflare turnstile of fuckingfast is gone
+
+### 📚 Documentation
+
+- No more cookies populating
 ## [0.4.7] - 2026-09-05
 
 ### 🐛 Bug Fixes
