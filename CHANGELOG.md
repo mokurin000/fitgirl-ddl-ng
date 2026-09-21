@@ -3,6 +3,14 @@
 ### 🚀 Features
 
 - Anonymous logs capturing
+
+### 🐛 Bug Fixes
+
+- Do not raise exception here
+
+### ⚙️ Miscellaneous Tasks
+
+- Bump version to 0.4.9
 ## [0.4.8] - 2026-09-20
 
 ### 🐛 Bug Fixes
