@@ -7,7 +7,7 @@ requires-python = ">=3.11"
 dependencies = [
     "loguru>=0.7.3",
     "sentry-sdk>=2.69.2",
-    "zendriver @ git+https://github.com/A-Nolan/zendriver.git@fix-verify-cf-document-scoped-input-lookup",
+    "zendriver>=0.16.0",
 ]
 
 [tool.uv]
