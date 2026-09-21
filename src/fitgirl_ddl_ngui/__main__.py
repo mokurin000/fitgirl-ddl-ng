@@ -41,8 +41,6 @@ def main() -> None:
         },
     )
 
-    raise Exception()
-
     app = wx.App()
     # Enable the dark mode support on Windows
     if hasattr(app, "MSWEnableDarkMode"):
