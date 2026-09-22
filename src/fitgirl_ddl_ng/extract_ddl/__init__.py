@@ -3,6 +3,7 @@ from typing import Callable
 from urllib.parse import urlparse
 
 from zendriver import Tab
+from zendriver.core.connection import ProtocolException
 from loguru import logger
 
 try:
@@ -74,9 +75,15 @@ async def extract_ddl(
         }})
         """
 
-        result = await tab.evaluate(
-            expression, await_promise=True, return_by_value=True
-        )
+        try:
+            result = await tab.evaluate(
+                expression, await_promise=True, return_by_value=True
+            )
+        except ProtocolException:
+            logger.error(
+                f"Fetch error: {original_url}, please check your network connection!"
+            )
+            continue
 
         try:
             direct_uri = result["headers"]["hx-redirect"]
