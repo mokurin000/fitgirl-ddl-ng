@@ -140,7 +140,7 @@ class GuiWorker(threading.Thread):
         chosen = [link for group in selected for link in groups[group]]
         if self.frame is not None:
             wx.CallAfter(self.frame.game_progress_range, len(chosen))
-        logger.info(f"{slug}: extracting direct links...")
+        logger.info(f"{slug}: extracting {len(chosen)} direct links...")
 
         await self._tab.get(_FUCKING_FAST)
         await self._tab.wait_for_ready_state(until="complete", timeout=60.0)
