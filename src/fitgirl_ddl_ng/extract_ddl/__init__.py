@@ -1,4 +1,5 @@
 import re
+import asyncio
 from typing import Callable
 from urllib.parse import urlparse
 
@@ -75,15 +76,21 @@ async def extract_ddl(
         }})
         """
 
-        try:
-            result = await tab.evaluate(
-                expression, await_promise=True, return_by_value=True
-            )
-        except ProtocolException:
+        for count in range(5):
+            try:
+                result = await tab.evaluate(
+                    expression, await_promise=True, return_by_value=True
+                )
+            except ProtocolException:
+                count += 1
+                await asyncio.sleep(2**count)
+            else:
+                break
+        else:
             logger.error(
                 f"Fetch error: {original_url}, please check your network connection!"
             )
-            continue
+            break
 
         try:
             direct_uri = result["headers"]["hx-redirect"]
