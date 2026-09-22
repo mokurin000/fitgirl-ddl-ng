@@ -28,7 +28,12 @@ async def scrape_ff_links(tab: zd.Tab, url: str) -> list[str]:
     logger.info(f"Goto {url}...")
 
     await tab.get(url)
-    await tab.wait_for("article.post", timeout=60)
+    await tab.wait_for("article.post", timeout=120)
+
+    try:
+        await tab.wait_for(FILE_HOSTER_SINGLE, timeout=10)
+    except TimeoutError:
+        raise FuckingFastMissing()
     logger.info("Page loaded, scraping...")
 
     # Sometimes fitgirl put multiple "FileHoster: FuckingFast" in a post
