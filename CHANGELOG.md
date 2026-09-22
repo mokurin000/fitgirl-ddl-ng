@@ -1,3 +1,8 @@
+## [0.4.11] - 2026-09-22
+
+### 💼 Other
+
+- Retry-fail strategy, at most 31 seconds
 ## [0.4.10] - 2026-09-22
 
 ### 🐛 Bug Fixes
@@ -17,6 +22,7 @@
 
 - *(changelog)* Update
 - Suggest windows 10 in bug report template
+- *(changelog)* Update changelogs
 
 ### ⚙️ Miscellaneous Tasks
 
