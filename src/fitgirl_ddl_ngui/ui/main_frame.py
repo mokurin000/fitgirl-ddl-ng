@@ -5,6 +5,7 @@ from concurrent.futures import Future
 from typing import TYPE_CHECKING
 
 import wx
+import sentry_sdk
 from loguru import logger
 
 if TYPE_CHECKING:
@@ -176,4 +177,5 @@ class MainFrame(wx.Frame):
         """Stop the worker before the window closes."""
 
         self.worker.stop()
+        sentry_sdk.get_client().close(timeout=2.0)
         event.Skip()
