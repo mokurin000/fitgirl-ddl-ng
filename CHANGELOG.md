@@ -1,3 +1,20 @@
+## [0.4.10] - 2026-09-22
+
+### 🐛 Bug Fixes
+
+- Flush logs before normal shutdown
+- Scrape some badly ill-formed game article
+- Unexpected missing source errors on bad network
+
+### 💼 Other
+
+- Cloudflare fix is unneeded too
+- Tell users how many file to scrape
+
+### 📚 Documentation
+
+- *(changelog)* Update
+- Suggest windows 10 in bug report template
 ## [0.4.9] - 2026-09-21
 
 ### 🚀 Features
