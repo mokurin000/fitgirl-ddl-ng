@@ -14,7 +14,7 @@ FILE_HOSTER_SINGLE = f"{FUCKING_FAST} > a"
 
 otherwise refers to a pastebin for all fuckingfast links."""
 
-FILE_HOSTER_SPOLIER = f"{FUCKING_FAST} > div.su-spoiler > div.su-spoiler-content"
+SPOLIER_ATAGS = "div.su-spoiler > div.su-spoiler-content > a"
 """Spolier content for multi-part releases."""
 
 
@@ -51,29 +51,26 @@ async def scrape_ff_links(tab: zd.Tab, url: str) -> list[str]:
             )
 
     filehoster_ff_a = filehoster_ff_atags.pop(0)
-    filehoster_ff_spoliers = await tab.query_selector_all(FILE_HOSTER_SPOLIER)
+    spolier_atags = await tab.query_selector_all(SPOLIER_ATAGS)
 
-    if not filehoster_ff_spoliers:
+    if not spolier_atags:
         single_url = filehoster_ff_a.attrs.get("href")
         if single_url is None:
             raise FuckingFastMissing()
         return [single_url]
     else:
-        spoliter_count = len(filehoster_ff_spoliers)
-        if spoliter_count > 1:
-            logger.warning("Found multiple ff links spoliers")
-
         urls = []
 
         # https://fitgirl-repacks.site/honey-select-2-libido/
         # Some repacks have multiple sections with different spolier blocks
-        for spolier in filehoster_ff_spoliers:
-            atags = await spolier.query_selector_all("a")
-            for tag in atags:
-                item_url = tag.attrs.get("href")
-                if item_url is None:
-                    logger.warning("Missing spolier link: fitgirl side bug!")
-                    continue
-                urls.append(item_url)
+        for tag in spolier_atags:
+            item_url: str = tag.attrs.get("href")
+            if item_url is None:
+                logger.warning("Missing spolier link: fitgirl side bug!")
+                continue
+            # Filter out non-fuckingfast urls
+            if not item_url.startswith("https://fuckingfast.co/"):
+                continue
+            urls.append(item_url)
 
         return sorted(set(urls), key=lambda url: url.split("#")[1])
