@@ -5,16 +5,22 @@
 - Flush logs before normal shutdown
 - Scrape some badly ill-formed game article
 - Unexpected missing source errors on bad network
+- Handle fetch() errors during ddl extraction
 
 ### 💼 Other
 
 - Cloudflare fix is unneeded too
 - Tell users how many file to scrape
+- *(deps)* Bump sentry sdk to 2.70
 
 ### 📚 Documentation
 
 - *(changelog)* Update
 - Suggest windows 10 in bug report template
+
+### ⚙️ Miscellaneous Tasks
+
+- Bump version to 0.4.10
 ## [0.4.9] - 2026-09-21
 
 ### 🚀 Features
