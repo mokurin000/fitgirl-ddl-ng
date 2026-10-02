@@ -25,9 +25,9 @@ def main() -> None:
     """
 
     sentry_sdk.init(
-        dsn="https://283c7a3be770406db49a2e8ea71eb494@app.glitchtip.com/28055",
+        dsn="https://4874f588924a4c209e1ad814f33af2cd@app.glitchtip.com/28419",
         release=version("fitgirl-ddl-ng"),
-        traces_sample_rate=0.01,
+        traces_sample_rate=0.0,  # No performance trace
         auto_session_tracking=False,
         integrations=[
             LoguruIntegration(capture_sentry_logs=True),
