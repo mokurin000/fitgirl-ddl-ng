@@ -6,8 +6,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "loguru>=0.7.3",
-    "sentry-sdk>=2.70.0",
-    "zendriver>=0.16.0",
+    "sentry-sdk>=2.71.0",
+    "zendriver>=0.17.1",
 ]
 
 [tool.uv]
@@ -21,7 +21,7 @@ extract-ddl = "fitgirl_ddl_ng.extract_ddl.__main__:app"
 cli = [
     "questionary>=2.1.1",
     "tqdm>=4.70.0",
-    "typer>=0.27.1",
+    "typer>=0.27.2",
 ]
 gui = [
     "wxpython>=4.3.1",
