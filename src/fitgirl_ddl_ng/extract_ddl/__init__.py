@@ -95,7 +95,7 @@ async def extract_ddl(
         try:
             direct_uri = result["headers"]["hx-redirect"]
         except KeyError:
-            logger.error(f"Skipping {original_url}: status={result['status']}")
+            logger.warning(f"Skipping {original_url}: status={result['status']}")
             continue
 
         result_text += f"""{direct_uri}
