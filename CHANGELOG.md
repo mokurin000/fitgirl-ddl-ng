@@ -1,8 +1,19 @@
+## [0.4.12] - 2026-10-02
+
+### 💼 Other
+
+- Mark skips as warning for not becoming log issues
+- Capture even more exceptions
+- Bump dependencies
 ## [0.4.11] - 2026-09-22
 
 ### 💼 Other
 
 - Retry-fail strategy, at most 31 seconds
+
+### ⚙️ Miscellaneous Tasks
+
+- Bump version to 0.4.11
 ## [0.4.10] - 2026-09-22
 
 ### 🐛 Bug Fixes
