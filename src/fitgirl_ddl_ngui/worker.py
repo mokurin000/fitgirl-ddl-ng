@@ -11,6 +11,7 @@ import wx
 import zendriver as zd
 from loguru import logger
 from websockets import ConnectionClosedError
+from zendriver.core.connection import ProtocolException
 
 from fitgirl_ddl_ng.extract_ddl import extract_ddl, group_urls
 from fitgirl_ddl_ng.scrape_links import FuckingFastMissing, scrape_ff_links
@@ -91,7 +92,7 @@ class GuiWorker(threading.Thread):
                 logger.warning(f"{slug}: fuckingfast.co mirror not available, skipped")
             except TimeoutError:
                 logger.warning(f"{slug}: timeout after try loading in 120s")
-            except ConnectionClosedError:
+            except (ConnectionClosedError, ProtocolException):
                 logger.warning(f"{slug}: lost connection to the browser")
             except:  # noqa: E722
                 logger.exception(f"{slug}: failed")
