@@ -157,9 +157,20 @@ class GuiWorker(threading.Thread):
         )
 
         out_file = Path.cwd() / "aria2" / f"{slug}.txt"
-        out_file.parent.mkdir(exist_ok=True)
-        out_file.write_text(text, encoding="utf-8")
-        logger.info(f"{slug}: saved {out_file}")
+        try:
+            out_file.parent.mkdir(parents=True, exist_ok=True)
+            out_file.write_text(text, encoding="utf-8")
+        except (
+            PermissionError,
+            NotADirectoryError,
+            FileExistsError,
+            IsADirectoryError,
+            FileNotFoundError,
+            OSError,
+        ) as e:
+            logger.error(f"{slug}: failed to save {out_file}: {e}")
+        else:
+            logger.info(f"{slug}: saved {out_file}")
 
     def _on_extract_progress(self, done: int, _total: int) -> None:
         """Forward per-URL extraction progress to the UI thread."""
