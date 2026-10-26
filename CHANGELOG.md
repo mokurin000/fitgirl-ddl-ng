@@ -1,19 +1,31 @@
+## [0.4.13] - 2026-10-26
+
+### 💼 Other
+
+- Explictly handle PermissionError, etc.
+- Sentry_sdk is a gui only dependency
+- Also handle the ProtocolException
 ## [0.4.12] - 2026-10-02
+
+### ⚙️ Miscellaneous Tasks
+
+- Bump version to 0.4.12
 
 ### 💼 Other
 
 - Mark skips as warning for not becoming log issues
 - Capture even more exceptions
 - Bump dependencies
+- Upload logs of 0.4.12 to the new project
 ## [0.4.11] - 2026-09-22
-
-### 💼 Other
-
-- Retry-fail strategy, at most 31 seconds
 
 ### ⚙️ Miscellaneous Tasks
 
 - Bump version to 0.4.11
+
+### 💼 Other
+
+- Retry-fail strategy, at most 31 seconds
 ## [0.4.10] - 2026-09-22
 
 ### 🐛 Bug Fixes
@@ -22,12 +34,6 @@
 - Scrape some badly ill-formed game article
 - Unexpected missing source errors on bad network
 - Handle fetch() errors during ddl extraction
-
-### 💼 Other
-
-- Cloudflare fix is unneeded too
-- Tell users how many file to scrape
-- *(deps)* Bump sentry sdk to 2.70
 
 ### 📚 Documentation
 
@@ -38,6 +44,12 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Bump version to 0.4.10
+
+### 💼 Other
+
+- Cloudflare fix is unneeded too
+- Tell users how many file to scrape
+- *(deps)* Bump sentry sdk to 2.70
 ## [0.4.9] - 2026-09-21
 
 ### 🚀 Features
@@ -66,13 +78,13 @@
 
 - Bypass cloudflare turnstile
 
-### 💼 Other
-
-- Reduce wait time to load the whole fitgirl page
-
 ### ⚙️ Miscellaneous Tasks
 
 - Bump version to 0.4.7
+
+### 💼 Other
+
+- Reduce wait time to load the whole fitgirl page
 ## [0.4.6] - 2026-08-22
 
 ### 🐛 Bug Fixes
@@ -86,28 +98,28 @@
 - *(changelog)* Update changelog for 0.4.6
 ## [0.4.5] - 2026-08-20
 
-### 💼 Other
-
-- Monkey-patch `XMLHttpRequest` to capture /go requests
-
 ### ⚙️ Miscellaneous Tasks
 
 - Bump version to 0.4.4
+
+### 💼 Other
+
+- Monkey-patch `XMLHttpRequest` to capture /go requests
 ## [0.4.4] - 2026-08-20
 
 ### 🐛 Bug Fixes
 
 - Stuck at some edge cases
 
-### 🚜 Refactor
-
-- Standalone module for the GUI part
-
 ### 📚 Documentation
 
 - Add changelog.md
 - Update changelog.md
 - *(changelog)* Minor update
+
+### 🚜 Refactor
+
+- Standalone module for the GUI part
 
 ### ⚙️ Miscellaneous Tasks
 
@@ -129,11 +141,6 @@
 - Do not add hard-coded mirror
 - Handle browser closed by user after scraped
 
-### 💼 Other
-
-- Fix python3.dll must be in the directory
-- Support python 3.11+
-
 ### 📚 Documentation
 
 - *(readme)* Fix uv commands with the extra group
@@ -147,6 +154,11 @@
 - *(windows)* Deploy packaged self-extraction LZMA2 PE
 - Fix packaged path
 - Release on new tag
+
+### 💼 Other
+
+- Fix python3.dll must be in the directory
+- Support python 3.11+
 ## [0.4.0] - 2026-08-12
 
 ### 🚀 Features
@@ -167,6 +179,25 @@
 - Fitgirl does not require ff cookies
 - Ignore filenotfound error
 - Handle missing fuckingfast links
+
+### 📚 Documentation
+
+- *(readme)* Document on usage
+- *(readme)* Pre-built exe using pyinstaller
+- *(readme)* Prerequisites
+- *(readme)* Package using python-embed
+- *(readme)* Bundle commands
+
+### 🚜 Refactor
+
+- Split up modules
+- Split functions for scraping and cookies population
+- Worker, group_dialog, main_frame
+
+### ⚙️ Miscellaneous Tasks
+
+- Initial PoC of `dlpass` automation
+- The `BROWSER_INSTANCE` was unused
 
 ### 💼 Other
 
@@ -198,22 +229,3 @@
 - Centre window, save to aria2/
 - Per-game & per-file progress bars
 - Remove the previously packged exe
-
-### 🚜 Refactor
-
-- Split up modules
-- Split functions for scraping and cookies population
-- Worker, group_dialog, main_frame
-
-### 📚 Documentation
-
-- *(readme)* Document on usage
-- *(readme)* Pre-built exe using pyinstaller
-- *(readme)* Prerequisites
-- *(readme)* Package using python-embed
-- *(readme)* Bundle commands
-
-### ⚙️ Miscellaneous Tasks
-
-- Initial PoC of `dlpass` automation
-- The `BROWSER_INSTANCE` was unused
