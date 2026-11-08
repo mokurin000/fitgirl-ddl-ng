@@ -14,7 +14,7 @@ FILE_HOSTER_SINGLE = f"{FUCKING_FAST} > a"
 
 otherwise refers to a pastebin for all fuckingfast links."""
 
-SPOLIER_ATAGS = "div.su-spoiler > div.su-spoiler-content > a"
+SPOLIER_ATAGS = "div.su-spoiler > div.su-spoiler-content a"
 """Spolier content for multi-part releases."""
 
 
